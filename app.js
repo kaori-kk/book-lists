@@ -1,3 +1,5 @@
+// CLASS BOOK //
+
 class Book {
   constructor(title, author, startDate, endDate, rating) {
     this.title = title;
@@ -8,28 +10,13 @@ class Book {
   }
 }
 
+
 // CLASS UI //
 
 class UI {
   static displayBooks(){
-    const StoredBooks = [
-      {
-        title: "Book one",
-        author: "AAAA",
-        startDate: "2020-04-10",
-        endDate: "2020-04-15",
-        rating: "5"
-      },
-      {
-        title: "Book two",
-        author: "AAAA",
-        startDate: "2020-03-25",
-        endDate: "2020-03-28",
-        rating: "4"
-      }
-    ];
 
-    const books = StoredBooks;
+    const books = Store.getBooks();
     books.forEach((book) => UI.addBookToList(book));
   }
 
@@ -77,6 +64,35 @@ class UI {
 
 }
 
+// CLASS STORE //
+class Store {
+  static getBooks() {
+    let books;
+    if (localStorage.getItem("books") === null) {
+      books = [];
+    }else {
+      books = JSON.parse(localStorage.getItem("books"));
+    }
+    return books;
+  }
+
+  static addBooks(book){
+    const books = Store.getBooks();
+    books.push(book);
+    localStorage.setItem("books", JSON.stringify(books));
+  }
+
+  static removeBooks(title){
+    const books = Store.getBooks();
+
+    books.forEach((book, index) => {
+      if (book.title === title) {
+        books.splice(index, 1)
+      }
+    });
+    localStorage.setItem("books", JSON.stringify(books));
+  }
+}
 // DISPLAY BOOKS //
 
 document.addEventListener('DOMContentLoaded', UI.displayBooks)
@@ -101,6 +117,7 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
     const book = new Book(title, author, startDate, endDate, rating);
 
     UI.addBookToList(book);
+    Store.addBooks(book);
     UI.showAlert("Book is added successflly", "info")
     UI.clearInput();
   }
@@ -110,7 +127,9 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
 
 document.querySelector('#book-list').addEventListener("click", (e) => {
   UI.deleteBook(e.target);
-  UI.showAlert("Book is deleted", "info")
+  const title = e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+  Store.removeBooks(title)
+  UI.showAlert(`${title} is deleted`, "info")
 })
 
 
