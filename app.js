@@ -57,6 +57,18 @@ class UI {
     document.querySelector("#rating").value = "";
   }
 
+  static showAlert(message, className) {
+    const div = document.createElement("div");
+    div.className = `alert alert-${className}`;
+    div.appendChild(document.createTextNode(message));
+
+    const container = document.querySelector(".book-container");
+    const form = document.querySelector("#book-form");
+    container.insertBefore(div, form)
+
+    setTimeout(() => document.querySelector(".alert").remove(), 4000)
+  }
+
   static deleteBook(target){
     if(target.classList.contains("delete")){
       target.parentElement.parentElement.remove();
@@ -81,16 +93,24 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
   const endDate = document.querySelector("#endDate").value;
   const rating = document.querySelector("#rating").value;
 
-  const book = new Book(title, author, startDate, endDate, rating);
+  // VALIDATION //
 
-  UI.addBookToList(book);
-  UI.clearInput();
+  if( title === "" || author === "" || startDate === "" || endDate === "" || rating === "") {
+    UI.showAlert("Please fill in all fields", "primary")
+  }else {
+    const book = new Book(title, author, startDate, endDate, rating);
+
+    UI.addBookToList(book);
+    UI.showAlert("Book is added successflly", "info")
+    UI.clearInput();
+  }
 })
 
 // DELETE BOOKS //
 
 document.querySelector('#book-list').addEventListener("click", (e) => {
   UI.deleteBook(e.target);
+  UI.showAlert("Book is deleted", "info")
 })
 
 
