@@ -8,6 +8,8 @@ class Book {
   }
 }
 
+// CLASS UI //
+
 class UI {
   static displayBooks(){
     const StoredBooks = [
@@ -46,13 +48,28 @@ class UI {
 
     list.appendChild(row);
   }
+
+  static clearInput(){
+    document.querySelector("#title").value = "";
+    document.querySelector("#author").value = "";
+    document.querySelector("#startDate").value = "";
+    document.querySelector("#endDate").value = "";
+    document.querySelector("#rating").value = "";
+  }
+
+  static deleteBook(target){
+    if(target.classList.contains("delete")){
+      target.parentElement.parentElement.remove();
+    }
+  }
+
 }
 
-// DISPLAY //
+// DISPLAY BOOKS //
 
 document.addEventListener('DOMContentLoaded', UI.displayBooks)
 
-// ADD //
+// ADD BOOKS //
 
 document.querySelector("#book-form").addEventListener("submit", (e) => {
 
@@ -65,11 +82,15 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
   const rating = document.querySelector("#rating").value;
 
   const book = new Book(title, author, startDate, endDate, rating);
-  console.log(book)
+
   UI.addBookToList(book);
+  UI.clearInput();
 })
 
+// DELETE BOOKS //
 
-
+document.querySelector('#book-list').addEventListener("click", (e) => {
+  UI.deleteBook(e.target);
+})
 
 
