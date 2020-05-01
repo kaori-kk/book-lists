@@ -1,4 +1,4 @@
-input.star {
+/*input.star {
    border: 0;
    width: 1px;
    height: 1px;
@@ -25,9 +25,9 @@ label.star:before {
    font-size: 1.5em;
    color: var(--accent-color);
    -webkit-user-select: none; /* Safari 3.1+ */
-   -moz-user-select: none; /* Firefox 2+ */
-   -ms-user-select: none; /* IE 10+ */
-   user-select: none;
+   /*-moz-user-select: none; /* Firefox 2+ */
+   /*-ms-user-select: none; /* IE 10+ */
+   /*user-select: none;
 }
 
 input.star:checked ~ label.star:before {
@@ -44,3 +44,4 @@ label.star:hover ~ label.star:before {
 label.star:hover:before {
    color: #FFC107;
 }
+*/
